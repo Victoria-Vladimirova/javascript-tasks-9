@@ -4,6 +4,7 @@ var test = require('../lib/flow');
 
 var chai = require('chai');
 var sinon = require('sinon');
+var path = require('path');
 chai.use(require('sinon-chai'));
 
 var expect = chai.expect;
@@ -219,6 +220,8 @@ describe('Котофайлы', () => {
 
         it('Полученную функцию можно использовать в serial', (done) => {
 
+            var barsik = path.join(__dirname, '..', 'cats', 'barsik.json');
+
             var callback = (error, data) => {
                 expect(error).to.be.equal(null);
                 expect(data.name).to.be.equal('barsik');
@@ -227,7 +230,7 @@ describe('Котофайлы', () => {
             };
             test.serial([
                 (next) => {
-                    fs.readFile('./cats/barsik.json', next);
+                    fs.readFile(barsik, next);
                 },
                 test.makeAsync(JSON.parse)
             ], callback);
